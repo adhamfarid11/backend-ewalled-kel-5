@@ -22,5 +22,10 @@ public class WalletController {
     @GetMapping("/{id}")
     public WalletResponse getWalletById(@PathVariable Long id) {
         return walletService.getWalletById(id);
-}
+    }
+
+    // @GetMapping("/me")
+    // public WalletResponse getMyWallets() {
+    // return walletService.getMyWallets();
+    // }
 }
