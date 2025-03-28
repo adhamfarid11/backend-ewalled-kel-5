@@ -1,14 +1,20 @@
 package com.odp.walled.controller;
 
+import com.odp.walled.dto.BaseResponse;
 import com.odp.walled.dto.TransactionRequest;
 import com.odp.walled.dto.TransactionResponse;
+import com.odp.walled.dto.UserResponse;
 import com.odp.walled.service.TransactionService;
+import com.odp.walled.service.UserService;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,8 +30,9 @@ public class TransactionController {
     }
 
     @GetMapping
-    public List<TransactionResponse> getTransactionsByWallet(
+    public ResponseEntity<BaseResponse<List<TransactionResponse>>> getTransactionsByWallet(
             @RequestParam Long walletId) {
-        return transactionService.getTransactionsByWallet(walletId);
+        return ResponseEntity.ok(new BaseResponse<List<TransactionResponse>>("Success",
+                transactionService.getTransactionsByWallet(walletId)));
     }
 }

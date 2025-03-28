@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Data
 public class Transaction {
     public enum TransactionType {
-        TOP_UP, TRANSFER
+        TOP_UP, TRANSFER, QUICKGIFT
     }
 
     @Id
