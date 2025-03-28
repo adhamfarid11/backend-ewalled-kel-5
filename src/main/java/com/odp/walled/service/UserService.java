@@ -18,8 +18,8 @@ public class UserService {
     private final UserMapper userMapper;
 
     public UserResponse createUser(UserRequest request) {
-        if (request.getPhoneNumber() != null && 
-        userRepository.existsByPhoneNumber(request.getPhoneNumber())) {
+        if (request.getPhoneNumber() != null &&
+                userRepository.existsByPhoneNumber(request.getPhoneNumber())) {
             throw new DuplicateException("Phone number already in use");
         }
         if (userRepository.existsByEmail(request.getEmail()))
@@ -27,7 +27,7 @@ public class UserService {
 
         if (userRepository.existsByUsername(request.getUsername()))
             throw new DuplicateException("Username already exists");
-        
+
         User user = userMapper.toEntity(request);
         return userMapper.toResponse(userRepository.save(user));
     }
@@ -36,5 +36,23 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFound("User not found"));
         return userMapper.toResponse(user);
+    }
+
+    public UserResponse getCurrentUser(String email) {
+
+        // Find the user by email
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFound("User not found"));
+
+        // Convert to response DTO
+        UserResponse response = new UserResponse(
+                user.getId(),
+                user.getEmail(),
+                user.getUsername(),
+                user.getFullname(),
+                user.getAvatarUrl(),
+                user.getPhoneNumber());
+
+        return response;
     }
 }

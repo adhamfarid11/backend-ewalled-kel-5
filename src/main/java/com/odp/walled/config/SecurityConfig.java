@@ -21,6 +21,9 @@ import lombok.*;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JwtAuthFilter jwtAuthFilter;
+
     @SuppressWarnings("removal")
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -47,7 +50,10 @@ public class SecurityConfig {
                             System.out.println("[DEBUG] 403 Access Denied - " + accessDeniedException.getMessage());
                             response.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "Access Denied - You don't have permission.");
-                        }));
+                        }))
+                .addFilterBefore(jwtAuthFilter,
+                        org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
+        ;
 
         return http.build();
     }

@@ -22,7 +22,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder; // Inject PasswordEncoder
 
-    private final JwtUtils jwtUtils;
+    private static JwtUtils jwtUtils;
 
     public RegisterResponse register(RegisterRequest request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
