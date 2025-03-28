@@ -1,11 +1,17 @@
 package com.odp.walled.model;
-import jakarta.persistence.*;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "users")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +29,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(name = "avatar_url")
+    @Column(name = "avatar_url", nullable = true)
     private String avatarUrl;
 
     @Column(name = "phone_number", length = 20)

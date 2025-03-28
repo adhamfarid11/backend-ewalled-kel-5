@@ -1,15 +1,22 @@
 package com.odp.walled.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "transactions")
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class Transaction {
-    public enum TransactionType { TOP_UP, TRANSFER }
+    public enum TransactionType {
+        TOP_UP, TRANSFER
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,7 +1,10 @@
 package com.odp.walled.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.math.BigDecimal;
@@ -9,6 +12,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "wallets")
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class Wallet {
     @Id
