@@ -1,6 +1,7 @@
 package com.odp.walled.service;
 
 import com.odp.walled.dto.WalletResponse;
+import com.odp.walled.dto.WalletResponseWithUser;
 import com.odp.walled.exception.ResourceNotFound;
 import com.odp.walled.mapper.WalletMapper;
 import com.odp.walled.model.User;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -44,4 +46,12 @@ public class WalletService {
                 .orElseThrow(() -> new ResourceNotFound("Wallet not found"));
         return walletMapper.toResponse(wallet);
     }
+    
+    public List<WalletResponseWithUser> getWalletTransferAvailability(Long id) {
+        List<Wallet> wallets = walletRepository.findAllByIdNot(id);
+        return wallets.stream()
+                .map(walletMapper::toResponseWithUser)
+                .toList();
+    }
+
 }
