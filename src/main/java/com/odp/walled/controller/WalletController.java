@@ -34,9 +34,4 @@ public class WalletController {
         List<WalletResponseWithUser> response = walletService.getWalletTransferAvailability(id);
         return ResponseEntity.ok(new BaseResponse<List<WalletResponseWithUser>>("Success", response));
     }
-
-    // @GetMapping("/me")
-    // public WalletResponse getMyWallets() {
-    // return walletService.getMyWallets();
-    // }
 }
