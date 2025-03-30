@@ -1,7 +1,6 @@
 package com.odp.walled.controller;
 
 import com.odp.walled.dto.BaseResponse;
-import com.odp.walled.dto.UserResponse;
 import com.odp.walled.dto.WalletResponse;
 import com.odp.walled.dto.WalletResponseWithUser;
 import com.odp.walled.service.WalletService;
