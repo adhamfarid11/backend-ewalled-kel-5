@@ -2,6 +2,7 @@ package com.odp.walled.service;
 
 import com.odp.walled.dto.TransactionRequest;
 import com.odp.walled.dto.TransactionResponse;
+import com.odp.walled.dto.TransactionResponseWithUser;
 import com.odp.walled.exception.InsufficientBalanceException;
 import com.odp.walled.exception.ResourceNotFound;
 import com.odp.walled.mapper.TransactionMapper;
@@ -58,11 +59,11 @@ public class TransactionService {
         return transactionMapper.toResponse(transactionRepository.save(transaction));
     }
 
-    public List<TransactionResponse> getTransactionsByWallet(Long walletId) {
+    public List<TransactionResponseWithUser> getTransactionsByWallet(Long walletId) {
         List<Transaction> transactions = transactionRepository
                 .findAllByWalletIdOrRecipientWalletId(walletId);
         return transactions.stream()
-                .map(transactionMapper::toResponse)
+                .map(transactionMapper::toResponseWithUser)
                 .toList();
     }
 

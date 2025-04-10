@@ -9,4 +9,5 @@ import java.util.List;
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     @Query("SELECT t FROM Transaction t WHERE t.wallet.id = :walletId OR t.recipientWallet.id = :walletId")
     List<Transaction> findAllByWalletIdOrRecipientWalletId(@Param("walletId") Long walletId);
+    
 }

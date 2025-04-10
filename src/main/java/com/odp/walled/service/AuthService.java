@@ -22,6 +22,8 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder; // Inject PasswordEncoder
 
+    private final WalletService walletService;
+
     private static JwtUtils jwtUtils;
 
     public RegisterResponse register(RegisterRequest request) {
@@ -38,6 +40,8 @@ public class AuthService {
                 .username(request.getUsername())
                 .build();
         userRepository.save(user);
+
+        walletService.createWallet(user.getId());
 
         return new RegisterResponse(
                 "User registered successfully",
