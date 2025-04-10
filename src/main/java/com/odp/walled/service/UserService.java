@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final WalletService walletService;
     private final UserMapper userMapper;
 
     public UserResponse createUser(UserRequest request) {
@@ -28,8 +29,11 @@ public class UserService {
         if (userRepository.existsByUsername(request.getUsername()))
             throw new DuplicateException("Username already exists");
 
-        User user = userMapper.toEntity(request);
-        return userMapper.toResponse(userRepository.save(user));
+        User userEntity = userMapper.toEntity(request);
+        UserResponse userResponse = userMapper.toResponse(userRepository.save(userEntity));
+        walletService.createWallet(userEntity.getId());
+
+        return userResponse;
     }
 
     public UserResponse getUserById(Long id) {
