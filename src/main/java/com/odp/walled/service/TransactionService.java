@@ -27,11 +27,14 @@ public class TransactionService {
 
     @Transactional
     public TransactionResponse processTransaction(TransactionRequest request) {
+
+        Boolean incomeFlag = false;
         Wallet wallet = walletRepository.findById(request.getWalletId())
                 .orElseThrow(() -> new ResourceNotFound("Wallet not found"));
 
         Transaction transaction = new Transaction();
         transaction.setWallet(wallet);
+        transaction.setCategory(request.getCategory());
         transaction.setTransactionType(request.getTransactionType());
         transaction.setAmount(request.getAmount());
         transaction.setDescription(request.getDescription());
@@ -53,17 +56,24 @@ public class TransactionService {
         } else {
             // TOP_UP
             wallet.setBalance(wallet.getBalance().add(request.getAmount()));
+            transaction.setCategory("Top Up");
+            incomeFlag = true;
         }
 
         walletRepository.save(wallet);
-        return transactionMapper.toResponse(transactionRepository.save(transaction));
+
+        TransactionResponse response = transactionMapper.toResponse(transactionRepository.save(transaction),
+                wallet.getId());
+        response.setIsIncome(incomeFlag);
+        return response;
     }
 
     public List<TransactionResponseWithUser> getTransactionsByWallet(Long walletId) {
         List<Transaction> transactions = transactionRepository
                 .findAllByWalletIdOrRecipientWalletId(walletId);
+
         return transactions.stream()
-                .map(transactionMapper::toResponseWithUser)
+                .map(transaction -> transactionMapper.toResponseWithUser(transaction, walletId))
                 .toList();
     }
 
