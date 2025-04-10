@@ -15,13 +15,27 @@ import com.odp.walled.model.Wallet;
 public interface TransactionMapper {
     TransactionMapper INSTANCE = Mappers.getMapper(TransactionMapper.class);
 
-    @Mapping(source = "wallet.id", target = "walletId")
-    @Mapping(source = "recipientWallet.id", target = "recipientWalletId")
-    TransactionResponse toResponse(Transaction transaction);
+    @Mapping(source = "transaction.wallet.id", target = "walletId")
+    @Mapping(source = "transaction.recipientWallet.id", target = "recipientWalletId")
+    @Mapping(target = "isIncome", expression = "java(mapIsIncome(transaction, walletId))")
+    TransactionResponse toResponse(Transaction transaction, Long walletId);
 
     @Mapping(target = "sender", expression = "java(mapUser(transaction.getWallet().getUser(), transaction.getWallet()))")
     @Mapping(target = "recipient", expression = "java(transaction.getRecipientWallet() != null ? mapUser(transaction.getRecipientWallet().getUser(), transaction.getRecipientWallet()) : null)")
-    TransactionResponseWithUser toResponseWithUser(Transaction transaction);
+    @Mapping(target = "isIncome", expression = "java(mapIsIncome(transaction, walletId))")
+    TransactionResponseWithUser toResponseWithUser(Transaction transaction, Long walletId);
+
+    default Boolean mapIsIncome(Transaction transaction, Long walletId) {
+        if ("TRANSFER".equals(transaction.getTransactionType().toString())) {
+            if (transaction.getRecipientWallet().getId() != walletId) {
+                return false;
+            }
+            return true;
+        }
+        // it must be top up
+        return true;
+
+    }
 
     default UserWalletDTO mapUser(User user, Wallet wallet) {
         if (user == null || wallet == null)

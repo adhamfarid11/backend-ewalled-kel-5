@@ -18,5 +18,8 @@ public class TransactionRequest {
     private BigDecimal amount;
     @NotNull
     private String recipientAccountNumber;
+
+    private String category;
+
     private String description;
 }

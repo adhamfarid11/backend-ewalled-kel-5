@@ -11,6 +11,8 @@ public class TransactionResponse {
     private Long walletId;
     private TransactionType transactionType;
     private BigDecimal amount;
+    private String category; // added
+    private Boolean isIncome; // added
     private Long recipientWalletId;
     private LocalDateTime transactionDate;
     private String description;

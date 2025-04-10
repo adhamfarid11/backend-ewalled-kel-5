@@ -11,6 +11,8 @@ public class TransactionResponseWithUser {
     private UserWalletDTO sender;
     private TransactionType transactionType;
     private BigDecimal amount;
+    private String category; // added
+    private Boolean isIncome; // added
     private UserWalletDTO recipient;
     private LocalDateTime transactionDate;
     private String description;
