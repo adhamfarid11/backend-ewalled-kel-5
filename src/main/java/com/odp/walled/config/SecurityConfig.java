@@ -72,7 +72,8 @@ public class SecurityConfig {
                 "http://localhost:8081",
                 "http://10.0.2.2:8080",
                 "http://localhost:8082",
-                "http://127.0.0.1:8080"));
+                "http://127.0.0.1:8080",
+                "https://fe-web-ewalled-kel-5.vercel.app"));
 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
