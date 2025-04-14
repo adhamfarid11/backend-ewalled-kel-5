@@ -72,6 +72,10 @@ public class TransactionService {
         List<Transaction> transactions = transactionRepository
                 .findAllByWalletIdOrRecipientWalletId(walletId);
 
+        if (transactions.isEmpty()) {
+            throw new ResourceNotFound("Wallet not found");
+        }
+
         return transactions.stream()
                 .map(transaction -> transactionMapper.toResponseWithUser(transaction, walletId))
                 .toList();

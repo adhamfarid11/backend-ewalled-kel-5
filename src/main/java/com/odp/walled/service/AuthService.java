@@ -8,6 +8,7 @@ import com.odp.walled.dto.LoginResponse;
 import com.odp.walled.dto.RegisterRequest;
 import com.odp.walled.dto.RegisterResponse;
 import com.odp.walled.exception.DuplicateException;
+import com.odp.walled.exception.ResourceNotFound;
 import com.odp.walled.model.User;
 import com.odp.walled.repository.UserRepository;
 import com.odp.walled.util.JwtUtils;
@@ -31,6 +32,16 @@ public class AuthService {
             throw new DuplicateException("Email already exists");
         }
 
+        // Validate password
+        String password = request.getPassword();
+        if (password.length() < 8 ||
+                !password.matches(".*[a-z].*") ||
+                !password.matches(".*[A-Z].*") ||
+                !password.matches(".*\\d.*")) {
+            throw new IllegalArgumentException(
+                    "Password must be at least 8 characters long, contain at least one lowercase letter, one uppercase letter, and one number");
+        }
+
         // Encode the password
         User user = User.builder()
                 .email(request.getEmail())
@@ -51,7 +62,7 @@ public class AuthService {
 
     public LoginResponse login(LoginRequest request) {
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFound("User not found"));
 
         // Verify password
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {

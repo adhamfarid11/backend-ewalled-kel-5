@@ -26,7 +26,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     // TODO add jwt secret key into env
 
-    private final String SECRET_KEY = "YourSecretKeyYourSecretKeyYourSecretKey"; // Use ENV VAR in production
+    private final String SECRET_KEY = "YourSecretKeyYourSecretKeyYourSecretKey";
+    // Use ENV VAR in production
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
